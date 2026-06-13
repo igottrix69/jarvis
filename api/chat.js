@@ -70,7 +70,10 @@ export default async function handler(req, res) {
   if (!text)
     return res.status(400).json({ response: "No input received.", tool: null });
 
-  const apiKey = userKey || process.env.GROQ_API_KEY || "";
+  // Strip any non-printable-ASCII (BOM, stray whitespace/newlines) — a BOM in the
+  // key would make the Authorization header an invalid ByteString and 500 the call.
+  const rawKey = userKey || process.env.GROQ_API_KEY || "";
+  const apiKey = rawKey.replace(/[^\x20-\x7E]/g, "").trim();
   if (!apiKey) {
     return res.status(200).json({
       response:
@@ -92,23 +95,27 @@ export default async function handler(req, res) {
   messages.push({ role: "user", content: text });
 
   let lastErr = "";
-  for (const model of MODELS) {
-    const attempt = await callGroq(model, apiKey, messages);
+  try {
+    for (const model of MODELS) {
+      const attempt = await callGroq(model, apiKey, messages);
 
-    if (attempt.ok) {
-      const out = (attempt.data?.choices?.[0]?.message?.content || "").trim();
-      return res.status(200).json({
-        response: out || `Understood, ${userName}.`,
-        tool: null,
-        model,
-        mode: "cloud",
-      });
+      if (attempt.ok) {
+        const out = (attempt.data?.choices?.[0]?.message?.content || "").trim();
+        return res.status(200).json({
+          response: out || `Understood, ${userName}.`,
+          tool: null,
+          model,
+          mode: "cloud",
+        });
+      }
+
+      lastErr = attempt.data?.error?.message || `HTTP ${attempt.status}`;
+      // Auth/permission/quota errors won't be fixed by trying another model.
+      if (attempt.status === 401 || attempt.status === 403 || attempt.status === 429) break;
+      // Otherwise fall through and try the next model (e.g. decommissioned model).
     }
-
-    lastErr = attempt.data?.error?.message || `HTTP ${attempt.status}`;
-    // Auth/permission/quota errors won't be fixed by trying another model.
-    if (attempt.status === 401 || attempt.status === 403 || attempt.status === 429) break;
-    // Otherwise fall through and try the next model (e.g. decommissioned model).
+  } catch (e) {
+    lastErr = String(e?.message || e);
   }
 
   return res.status(200).json({
