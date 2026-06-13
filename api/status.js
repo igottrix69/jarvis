@@ -5,7 +5,8 @@ export default function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.status(200).json({
     status: "online",
-    core: process.env.GEMINI_API_KEY ? "connected" : "no-key",
+    core: process.env.GROQ_API_KEY ? "connected" : "no-key",
+    provider: "groq",
     runtime: "vercel-serverless",
     time: new Date().toISOString(),
   });

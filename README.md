@@ -1,7 +1,7 @@
 # J.A.R.V.I.S
 ### Just A Rather Very Intelligent System
 
-An Iron Man-style AI assistant: a live mission-control **HUD** in the browser, **voice in / voice out**, Gemini-powered reasoning with live **web search**, and an optional **local backend** that lets JARVIS actually control your PC.
+An Iron Man-style AI assistant: a live mission-control **HUD** in the browser, **voice in / voice out** (free, browser-native), **Groq-powered reasoning** in the cloud, and an optional **local backend** that lets JARVIS actually control your PC.
 
 > **Live demo:** _deployed on Vercel_ — open the URL, click ⚙ Settings, and you're talking to JARVIS.
 
@@ -11,7 +11,7 @@ An Iron Man-style AI assistant: a live mission-control **HUD** in the browser, *
 
 | | What you get | Needs |
 |---|---|---|
-| **☁️ Cloud (hosted)** | Full HUD, voice in/out, Gemini reasoning + web search. Works on any device, nothing to install. | Just a browser. A Gemini key is configured server-side (or bring your own in Settings). |
+| **☁️ Cloud (hosted)** | Full HUD, voice in/out, Groq (Llama 3.3 70B) reasoning. Works on any device, nothing to install. | Just a browser. A Groq key is configured server-side (or bring your own in Settings). |
 | **🖥️ Local backend** | Everything above **plus** real desktop control — open apps, manage files, take screenshots, run code, set reminders, control the browser. | Python 3.11+ on your machine. |
 
 The web HUD automatically uses whichever is available and falls back to an offline **demo mode** if neither is reachable, so it always responds.
@@ -24,14 +24,14 @@ Pure HTML/CSS/JS HUD + two Vercel serverless functions:
 
 ```
 index.html        ← the HUD (boot sequence, arc reactor, waveform, radar, chat)
-api/chat.js       ← reasoning core — proxies to Gemini (key stays server-side)
+api/chat.js       ← reasoning core — proxies to Groq (key stays server-side)
 api/status.js     ← health check
 vercel.json       ← config
 ```
 
 ### Features
 - 🎙️ **Voice input** (Web Speech API) and 🔊 **voice replies** (Speech Synthesis) with a selectable JARVIS-style voice
-- 🌐 **Live web search** via Gemini's Google Search grounding (answers show a `WEB SEARCH` badge)
+- ⚡ **Fast reasoning** via Groq (Llama 3.3 70B) — near-instant responses
 - 🧠 **Conversation memory** — context is sent with each turn and persisted in `localStorage`
 - ⚙️ **Settings panel** — name, reasoning link (Cloud / Local / Demo), your own API key, voice on/off + voice picker, export chat
 - 🟢 **Live connection indicator** — shows whether you're on `CLOUD`, `LOCAL`, or `DEMO`
@@ -42,10 +42,10 @@ vercel.json       ← config
 npm i -g vercel
 vercel --prod
 # then add the env var:
-vercel env add GEMINI_API_KEY
+vercel env add GROQ_API_KEY
 ```
-The key is read from `process.env.GEMINI_API_KEY`. Get a free key at
-[aistudio.google.com/apikey](https://aistudio.google.com/apikey) (it should start with `AIza`).
+The key is read from `process.env.GROQ_API_KEY`. Get a free key (no credit card) at
+[console.groq.com/keys](https://console.groq.com/keys) (it should start with `gsk_`).
 
 No env var? No problem — visitors can paste their own key in **Settings** (stored only in their browser).
 
@@ -141,4 +141,4 @@ Add it to `TOOLS_SCHEMA` in `main.py` — JARVIS auto-routes to it by intent.
 - `cmd_control` refuses obviously destructive commands unless explicitly confirmed; file deletes go to the recycle bin.
 
 ---
-*Built with Gemini · "Sometimes you gotta run before you can walk."*
+*Cloud brain: Groq · Local voice + tools: Gemini · "Sometimes you gotta run before you can walk."*

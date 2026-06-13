@@ -25,3 +25,5 @@ memory/session.log
 Thumbs.db
 .idea/
 .vscode/
+
+.vercel

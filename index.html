@@ -963,10 +963,10 @@
     </div>
 
     <div class="field" id="keyField">
-      <label>Your Gemini API key (optional)</label>
-      <input type="password" id="setKey" placeholder="AIza... (leave blank to use the site's key)" />
+      <label>Your Groq API key (optional)</label>
+      <input type="password" id="setKey" placeholder="gsk_... (leave blank to use the site's key)" />
       <div class="hint">Stored only in this browser. Overrides the site key. Get one free at
-        <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com</a>.</div>
+        <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com</a>.</div>
     </div>
 
     <div class="field" id="localField" style="display:none">
@@ -1370,15 +1370,15 @@ function demoResponse(text) {
   if (/\btime\b/.test(t))     return { text: `The current time is ${new Date().toLocaleTimeString()}, ${u}.` };
   if (/\bdate\b|what day/.test(t)) return { text: `Today is ${new Date().toLocaleDateString(undefined,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}.` };
   if (/(open|launch).*(chrome|browser)/.test(t)) return { text: "Launching Chrome now.", badge: "open_app" };
-  if (/search|find|look up/.test(t)) return { text: "I'd run a live web search for that — connect a Gemini key in Settings and I'll fetch real results.", badge: "web_search" };
+  if (/search|find|look up/.test(t)) return { text: "I can reason about that once my core is online — connect a Groq key in Settings.", badge: "web_search" };
   if (/weather/.test(t)) return { text: "Pulling up current weather — full data unlocks with the reasoning core connected.", badge: "weather" };
-  if (/\bcode\b|script|write/.test(t)) return { text: "I can write that for you once the reasoning core is online. Add a Gemini key in Settings.", badge: "code_helper" };
+  if (/\bcode\b|script|write/.test(t)) return { text: "I can write that for you once the reasoning core is online. Add a Groq key in Settings.", badge: "code_helper" };
   if (/remind|alarm/.test(t)) return { text: "Reminder noted. The local backend schedules real reminders on your machine.", badge: "reminder" };
   if (/screenshot|screen/.test(t)) return { text: "Screen capture runs through the local backend (api_server.py).", badge: "screen_vision" };
   if (/volume|mute|sound|brightness/.test(t)) return { text: "Adjusting system settings — available through the local backend.", badge: "settings" };
   if (/thank/.test(t)) return { text: `Of course, ${u}. That's what I'm here for.` };
   if (/status|diagnostic/.test(t)) return { text: "All systems nominal. CPU at moderate load, memory stable, network connectivity confirmed." };
-  return { text: `Understood, ${u}. I'm currently in demo mode — add a Gemini API key in Settings (⚙) to bring my full reasoning online.` };
+  return { text: `Understood, ${u}. I'm currently in demo mode — add a Groq API key in Settings (⚙) to bring my full reasoning online.` };
 }
 
 // ── Connection status ────────────────────────────────────────────────────────
@@ -1425,7 +1425,7 @@ function syncModeFields() {
   document.getElementById("localField").style.display = mode === "local" ? "block" : "none";
   document.getElementById("keyField").style.display   = mode === "demo" ? "none" : "block";
   const hints = {
-    cloud: "Talks to Gemini through this site. Works anywhere, no install.",
+    cloud: "Talks to Groq (Llama 3.3) through this site. Works anywhere, no install.",
     local: "Run api_server.py on your PC to unlock app/file/screen control.",
     demo:  "No network — scripted responses for offline demos.",
   };
