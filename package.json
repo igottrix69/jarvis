@@ -1,0 +1,10 @@
+{
+  "name": "jarvis",
+  "version": "5.0.0",
+  "private": true,
+  "type": "module",
+  "description": "J.A.R.V.I.S — Just A Rather Very Intelligent System. Iron Man-style AI assistant HUD with Gemini-powered reasoning and an optional local PC-control backend.",
+  "engines": {
+    "node": ">=18"
+  }
+}

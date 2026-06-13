@@ -1,0 +1,11 @@
+# The Python backend is for local PC control only — not needed on Vercel.
+main.py
+api_server.py
+setup.py
+requirements.txt
+actions/
+config/
+memory/
+__pycache__/
+**/__pycache__/
+*.pyc

@@ -1,0 +1,32 @@
+# ── J.A.R.V.I.S local backend dependencies ──────────────────────────
+# Core
+google-genai>=0.3.0
+google-generativeai>=0.8.0
+flask>=3.0.0
+flask-cors>=4.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# Voice (main.py live mode)
+pyaudio>=0.2.13
+
+# PC control
+pyautogui>=0.9.54
+pyperclip>=1.8.2
+psutil>=5.9.0
+send2trash>=1.8.2
+
+# Vision
+mss>=9.0.1
+opencv-python>=4.9.0
+Pillow>=10.0.0
+numpy>=1.26.0
+
+# Browser automation
+playwright>=1.40.0
+
+# Media / misc
+youtube-transcript-api>=0.6.2
+
+# Windows-only niceties
+win10toast>=0.9 ; sys_platform == 'win32'
